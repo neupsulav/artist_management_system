@@ -4,6 +4,7 @@ const router = require("./router");
 
 // routes
 require("./routes/authRoutes");
+require("./routes/userRoutes");
 
 const PORT = process.env.PORT || 3000;
 
