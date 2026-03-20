@@ -5,6 +5,7 @@ const router = require("./router");
 // routes
 require("./routes/authRoutes");
 require("./routes/userRoutes");
+require("./routes/artistRoutes");
 
 const PORT = process.env.PORT || 3000;
 
