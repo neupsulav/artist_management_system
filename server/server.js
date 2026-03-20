@@ -2,6 +2,9 @@ const http = require("http");
 require("dotenv").config();
 const router = require("./router");
 
+// routes
+require("./routes/authRoutes");
+
 const PORT = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
