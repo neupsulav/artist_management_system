@@ -33,3 +33,19 @@ router.delete("/api/artists", (req, res) => {
     });
   });
 });
+
+router.get("/api/artists/export", (req, res) => {
+  authenticate(req, res, () => {
+    authorize(["super_admin", "artist_manager"])(req, res, () => {
+      artistController.exportArtists(req, res);
+    });
+  });
+});
+
+router.post("/api/artists/import", (req, res) => {
+  authenticate(req, res, () => {
+    authorize(["super_admin", "artist_manager"])(req, res, () => {
+      artistController.importArtists(req, res);
+    });
+  });
+});

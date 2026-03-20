@@ -1,5 +1,6 @@
 const db = require("../db");
 const { getRequestBody } = require("../utils/requestHelper");
+const { parseCSV, generateCSV } = require("../utils/csvHelper");
 const url = require("url");
 
 const getArtists = async (req, res) => {
@@ -173,9 +174,71 @@ const deleteArtist = async (req, res) => {
   }
 };
 
+const exportArtists = async (req, res) => {
+  try {
+    const query = "SELECT * FROM artist";
+    const result = await db.query(query);
+    const headers = [
+      "id",
+      "name",
+      "dob",
+      "gender",
+      "address",
+      "first_release_year",
+      "no_of_albums_released",
+    ];
+    const csv = generateCSV(headers, result.rows);
+
+    res.writeHead(200, {
+      "Content-Type": "text/csv",
+      "Content-Disposition": "attachment; filename=artists.csv",
+    });
+    res.end(csv);
+  } catch (err) {
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: err.message }));
+  }
+};
+
+const importArtists = async (req, res) => {
+  try {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk.toString()));
+    req.on("end", async () => {
+      try {
+        const artists = parseCSV(body);
+        for (const artist of artists) {
+          const query = `
+            INSERT INTO artist (name, dob, gender, address, first_release_year, no_of_albums_released)
+            VALUES ($1, $2, $3, $4, $5, $6)
+          `;
+          await db.query(query, [
+            artist.name,
+            artist.dob || null,
+            artist.gender || null,
+            artist.address || null,
+            parseInt(artist.first_release_year) || null,
+            parseInt(artist.no_of_albums_released) || 0,
+          ]);
+        }
+        res.writeHead(201, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Artists imported successfully" }));
+      } catch (err) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "CSV Parse Error: " + err.message }));
+      }
+    });
+  } catch (err) {
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: err.message }));
+  }
+};
+
 module.exports = {
   getArtists,
   createArtist,
   updateArtist,
   deleteArtist,
+  exportArtists,
+  importArtists,
 };
