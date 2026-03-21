@@ -6,6 +6,7 @@ const router = require("./router");
 require("./routes/authRoutes");
 require("./routes/userRoutes");
 require("./routes/artistRoutes");
+require("./routes/musicRoutes");
 
 const PORT = process.env.PORT || 3000;
 
