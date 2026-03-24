@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artist Management System - Dashboard</title>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar">
+        <h1>Artist Panel</h1>
+        <div id="user-info">
+          <span id="welcome-text"></span>
+          <button
+            onclick="logout()"
+            class="btn btn-outline"
+            style="width: auto; display: inline-block; margin-left: 1rem"
+          >
+            Logout
+          </button>
+        </div>
+      </nav>
+
+      <div class="tabs" id="main-tabs">
+        <div class="tab active" onclick="switchTab('users')" id="tab-users">
+          Users
+        </div>
+        <div class="tab" onclick="switchTab('artists')" id="tab-artists">
+          Artists
+        </div>
+      </div>
+
+      <div id="content-area">
+        <!-- Dynamic content will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-container" class="modal">
+      <div class="modal-content" id="modal-body">
+        <!-- Modal forms will be injected here -->
+      </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      // Simple auth check on load
+      if (!localStorage.getItem("token")) {
+        window.location.href = "login.html";
+      }
+    </script>
+  </body>
+</html>
