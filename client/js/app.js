@@ -15,7 +15,8 @@ function setupTabs() {
   const tabsContainer = document.getElementById("main-tabs");
   tabsContainer.innerHTML = "";
 
-  if (currentUser.role === "super_admin") {
+  // if (currentUser.role === "super_admin") {
+  if (currentUser.role !== "artist") {
     tabsContainer.innerHTML += `<div class="tab active" onclick="switchTab('users')" id="tab-users">Users</div>`;
   }
 
