@@ -12,7 +12,8 @@ router.get("/api/artists", (req, res) => {
 
 router.post("/api/artists", (req, res) => {
   authenticate(req, res, () => {
-    authorize(["super_admin", "artist_manager"])(req, res, () => {
+    // authorize(["super_admin", "artist_manager"])(req, res, () => {
+    authorize(["artist_manager"])(req, res, () => {
       artistController.createArtist(req, res);
     });
   });

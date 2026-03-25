@@ -132,7 +132,8 @@ async function renderArtists() {
             <h2>Artists Management</h2>
             <div style="display: flex; gap: 0.5rem;">
                 ${
-                  ["super_admin", "artist_manager"].includes(currentUser.role)
+                  // ["super_admin", "artist_manager"].includes(currentUser.role)
+                  ["artist_manager"].includes(currentUser.role)
                     ? `
                     <button class="btn btn-outline" style="width: auto;" onclick="exportArtists()">Export CSV</button>
                     ${currentUser.role === "artist_manager" ? `<button class="btn btn-outline" style="width: auto;" onclick="triggerImport()">Import CSV</button>` : ""}
@@ -229,9 +230,11 @@ async function viewSongs(artistId, artistName) {
                             <td>${song.album_name}</td>
                             <td>${song.genre}</td>
                             ${
-                              ["super_admin", "artist_manager", "artist"].includes(
-                                currentUser.role,
-                              )
+                              [
+                                "super_admin",
+                                "artist_manager",
+                                "artist",
+                              ].includes(currentUser.role)
                                 ? `
                                 <td>
                                     <button onclick="editMusic(${song.id}, ${artistId}, '${artistName.replace(/'/g, "\\'")}')" class="btn btn-outline" style="width: auto; padding: 0.25rem 0.5rem;">Edit</button>
