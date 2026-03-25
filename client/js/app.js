@@ -194,7 +194,9 @@ async function viewSongs(artistId, artistName) {
         <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
             <h2>Songs: ${artistName}</h2>
             ${
-              ["super_admin", "artist"].includes(currentUser.role)
+              ["super_admin", "artist_manager", "artist"].includes(
+                currentUser.role,
+              )
                 ? `
                 <button class="btn" style="width: auto;" onclick="showMusicModal(${artistId}, null, '${artistName.replace(/'/g, "\\'")}')">Add Song</button> 
             `
@@ -209,7 +211,13 @@ async function viewSongs(artistId, artistName) {
                         <th>Title</th>
                         <th>Album</th>
                         <th>Genre</th>
-                        ${["super_admin", "artist"].includes(currentUser.role) ? "<th>Actions</th>" : ""}
+                        ${
+                          ["super_admin", "artist_manager", "artist"].includes(
+                            currentUser.role,
+                          )
+                            ? "<th>Actions</th>"
+                            : ""
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -221,7 +229,7 @@ async function viewSongs(artistId, artistName) {
                             <td>${song.album_name}</td>
                             <td>${song.genre}</td>
                             ${
-                              ["super_admin", "artist"].includes(
+                              ["super_admin", "artist_manager", "artist"].includes(
                                 currentUser.role,
                               )
                                 ? `
