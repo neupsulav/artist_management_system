@@ -75,7 +75,12 @@ async function loadData() {
       }
     }
   } catch (err) {
-    contentArea.innerHTML = `<p class="text-danger">Error: ${err.message}</p>`;
+    contentArea.innerHTML = `
+      <div style="text-align: center; padding: 4rem 2rem;">
+        <p style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text-muted);">Seems like you do not have permission to access this data.</p>
+        <p style="font-size: 0.9rem; color: var(--text-muted); opacity: 0.7;">Error details: ${err.message}</p>
+      </div>
+    `;
   }
 }
 
