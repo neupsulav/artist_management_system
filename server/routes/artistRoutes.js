@@ -21,7 +21,8 @@ router.post("/api/artists", (req, res) => {
 
 router.put("/api/artists", (req, res) => {
   authenticate(req, res, () => {
-    authorize(["super_admin", "artist_manager"])(req, res, () => {
+    // authorize(["super_admin", "artist_manager"])(req, res, () => {
+    authorize(["artist_manager"])(req, res, () => {
       artistController.updateArtist(req, res);
     });
   });
@@ -29,7 +30,8 @@ router.put("/api/artists", (req, res) => {
 
 router.delete("/api/artists", (req, res) => {
   authenticate(req, res, () => {
-    authorize(["super_admin", "artist_manager"])(req, res, () => {
+    // authorize(["super_admin", "artist_manager"])(req, res, () => {
+    authorize(["artist_manager"])(req, res, () => {
       artistController.deleteArtist(req, res);
     });
   });

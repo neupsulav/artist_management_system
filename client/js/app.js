@@ -164,9 +164,10 @@ async function renderArtists() {
                             <td>
                                 <button onclick="viewSongs(${artist.id}, '${artist.name}')" class="btn btn-outline" style="width: auto; padding: 0.25rem 0.5rem;">View Songs</button>
                                 ${
-                                  ["super_admin", "artist_manager"].includes(
-                                    currentUser.role,
-                                  )
+                                  // ["super_admin", "artist_manager"].includes(
+                                  //   currentUser.role,
+                                  // )
+                                  ["artist_manager"].includes(currentUser.role)
                                     ? `
                                     <button onclick="editArtist(${artist.id})" class="btn btn-outline" style="width: auto; padding: 0.25rem 0.5rem; margin-left: 0.5rem;">Edit</button>
                                     <button onclick="deleteArtist(${artist.id})" class="btn btn-danger" style="width: auto; padding: 0.25rem 0.5rem; margin-left: 0.5rem;">Delete</button>
