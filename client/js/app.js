@@ -54,22 +54,7 @@ async function loadData() {
     } else if (currentTab === "music") {
       // Logic for 'artist' role to view their own music
       if (currentUser.role === "artist") {
-        try {
-          // Fetch artists to find the one matching the current user
-          const res = await api.get("/artists", { limit: 1000 });
-          const artistName = `${currentUser.first_name} ${currentUser.last_name}`;
-          const artist = res.data.find(
-            (a) => a.name.toLowerCase() === artistName.toLowerCase(),
-          );
-
-          if (artist) {
-            await viewSongs(artist.id, artist.name);
-          } else {
-            contentArea.innerHTML = `<div style="text-align: center; margin-top: 2rem;"><h3>Artist Profile Not Found</h3><p>Could not find an artist profile with name "${artistName}".</p></div>`;
-          }
-        } catch (err) {
-          contentArea.innerHTML = `<p class="text-danger">Error loading music: ${err.message}</p>`;
-        }
+        await viewSongs(currentUser.id, `${currentUser.first_name} ${currentUser.last_name}`);
       } else {
         contentArea.innerHTML = "<h3>Select an artist to view music</h3>";
       }
@@ -245,7 +230,7 @@ async function viewSongs(artistId, artistName) {
                                 ? `
                                 <td>
                                     <button onclick="editMusic(${song.id}, ${artistId}, '${artistName.replace(/'/g, "\\'")}')" class="btn btn-outline" style="width: auto; padding: 0.25rem 0.5rem;">Edit</button>
-                                    <button onclick="deleteMusic(${song.id})" class="btn btn-danger" style="width: auto; padding: 0.25rem 0.5rem; margin-left: 0.5rem;">Delete</button>
+                                    <button onclick="deleteMusic(${song.id}, ${artistId})" class="btn btn-danger" style="width: auto; padding: 0.25rem 0.5rem; margin-left: 0.5rem;">Delete</button>
                                 </td>
                             `
                                 : ""
@@ -596,10 +581,17 @@ async function editMusic(id, artistId, artistName) {
   }
 }
 
-async function deleteMusic(id) {
+async function deleteMusic(id, artistId) {
   if (confirm("Delete song?")) {
     await api.delete("/music", { id });
-    loadData();
+    if (currentUser.role === "artist") {
+      loadData();
+    } else {
+      const artistName = document
+        .querySelector("h2")
+        .innerText.replace("Songs: ", "");
+      viewSongs(artistId, artistName);
+    }
   }
 }
 

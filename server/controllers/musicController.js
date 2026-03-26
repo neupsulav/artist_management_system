@@ -4,14 +4,7 @@ const url = require("url");
 
 const checkArtistOwnership = async (user, artistId) => {
   if (user.role === "artist") {
-    const query = `
-      SELECT a.id 
-      FROM artist a
-      JOIN "user" u ON a.name = (u.first_name || ' ' || u.last_name)
-      WHERE u.id = $1 AND a.id = $2
-    `;
-    const result = await db.query(query, [user.id, artistId]);
-    if (result.rowCount === 0) {
+    if (parseInt(user.id) !== parseInt(artistId)) {
       throw new Error(
         "Forbidden: You can only manage songs for your own artist profile",
       );
